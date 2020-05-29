@@ -1,7 +1,7 @@
 # Face-Spoof-Detect
 Face Spoof Detect project implemented by Python. It's final project in Programming Language Course.
 ## Train
-Download LCC_FASD, and preprocessing.
+#### Download LCC_FASD, and preprocessing.
     cd traking
     python tracking.py
 ## Test
