@@ -58,7 +58,7 @@ def run_test():
     loss = criterion(outputs, labels)
     running_loss += loss.item() * inputs.size(0)
     running_corrects += torch.sum(preds == labels.data)
-    print(running_corrects.double())
+    #print(running_corrects.double())
     loss = running_loss / dataset_sizes
     acc = running_corrects.double() / dataset_sizes
 
