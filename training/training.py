@@ -175,10 +175,10 @@ def training():
     dataset_sizes, device, class_names, dataloaders=load_image()
     model_ft= pretrain_model_train(class_names, dataset_sizes, dataloaders,device)
     torch.save(model_ft.state_dict(), '../model.pkl')
-    inputs, classes = next(iter(dataloaders['training']))
-    out = torchvision.utils.make_grid(inputs)
+    #inputs, classes = next(iter(dataloaders['training']))
+    #out = torchvision.utils.make_grid(inputs)
     
-    visualize_model(out, device, class_names, dataloaders ,model_ft, num_images=6, title=[class_names[x] for x in classes])
+    #visualize_model(out, device, class_names, dataloaders ,model_ft, num_images=6, title=[class_names[x] for x in classes])
     #model=load_model()
     #train_model(class_names, dataset_sizes, dataloaders, device, model, criterion, optimizer, scheduler, num_epochs=25)
 
