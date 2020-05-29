@@ -133,7 +133,7 @@ def visualize_model(inp, device, class_names, dataloaders ,model, num_images=6, 
     fig = plt.figure()
 
     with torch.no_grad():
-        for i, (inputs, labels) in enumerate(dataloaders['val']):
+        for i, (inputs, labels) in enumerate(dataloaders['development']):
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -168,13 +168,13 @@ def pretrain_model_train(class_names, dataset_sizes, dataloaders,device):
 
     # Decay LR by a factor of 0.1 every 7 epochs
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-    model_ft = train_model(class_names, dataset_sizes, dataloaders, device, model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=1)
+    model_ft = train_model(class_names, dataset_sizes, dataloaders, device, model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=25)
     return model_ft
 
 def training():
     dataset_sizes, device, class_names, dataloaders=load_image()
     model_ft= pretrain_model_train(class_names, dataset_sizes, dataloaders,device)
-    torch.save(model_ft.state_dict(), '../model')
+    torch.save(model_ft.state_dict(), '../model.pkl')
     inputs, classes = next(iter(dataloaders['training']))
     out = torchvision.utils.make_grid(inputs)
     
