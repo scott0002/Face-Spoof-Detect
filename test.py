@@ -36,10 +36,10 @@ def load_image():
 
 def run_test():
     model = models.resnet18(pretrained=True)
-    model.load_state_dict(torch.load()
+    model.load_state_dict(torch.load(model))
     running_loss = 0.0
     running_corrects = 0
-    
+    model.eval()
 
 if __name__ == '__main__':
     run_test()
