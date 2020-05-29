@@ -168,14 +168,14 @@ def pretrain_model_train(class_names, dataset_sizes, dataloaders,device):
 
     # Decay LR by a factor of 0.1 every 7 epochs
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
-    model_ft = train_model(class_names, dataset_sizes, dataloaders, device, model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=25)
+    model_ft = train_model(class_names, dataset_sizes, dataloaders, device, model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=1)
     return model_ft
 
 def training():
     dataset_sizes, device, class_names, dataloaders=load_image()
     model_ft= pretrain_model_train(class_names, dataset_sizes, dataloaders,device)
-    torch.save(model_ft.state_dict(), '../')
-    inputs, classes = next(iter(dataloaders['train']))
+    torch.save(model_ft.state_dict(), '../model')
+    inputs, classes = next(iter(dataloaders['training']))
     out = torchvision.utils.make_grid(inputs)
     
     visualize_model(out, device, class_names, dataloaders ,model_ft, num_images=6, title=[class_names[x] for x in classes])
