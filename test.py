@@ -40,8 +40,9 @@ def run_test():
     # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
     model.fc = nn.Linear(num_ftrs, 2)
 
-    model = model.to(device)
+    
     model.load_state_dict(torch.load('model.pkl'))
+    model = model.to(device)
     running_loss = 0.0
     running_corrects = 0
     model.eval()
@@ -49,6 +50,7 @@ def run_test():
     for inputs, labels in dataloaders:
         inputs = inputs.to(device)
         labels = labels.to(device)
+    #print(dataloaders)
     # statistics
     criterion = nn.CrossEntropyLoss()
     outputs = model(inputs)
@@ -56,7 +58,7 @@ def run_test():
     loss = criterion(outputs, labels)
     running_loss += loss.item() * inputs.size(0)
     running_corrects += torch.sum(preds == labels.data)
-
+    print(running_corrects.double())
     loss = running_loss / dataset_sizes
     acc = running_corrects.double() / dataset_sizes
 
