@@ -1,26 +1,45 @@
+from __future__ import print_function, division
+
 import torch
-from PIL import Image
-from torchvision import transforms
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim import lr_scheduler
+import numpy as np
+import torchvision
+from torchvision import datasets, models, transforms
+import matplotlib.pyplot as plt
+import time
+import os
+import copy
+plt.ion() 
 
-def run():
-    input_image = Image.open(filename)
-    preprocess = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
-    input_tensor = preprocess(input_image)
-    input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
+def load_image():
+    data_transforms = {
+        'evaluation': transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ]),
+    }
+    data_dir = "..\LCC_FASD"
+    image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
+                                            data_transforms[x])
+                    for x in ['evaluation']}
+    dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
+                                                shuffle=True, num_workers=4)
+                for x in ['evaluation']}
+    dataset_sizes = {x: len(image_datasets[x]) for x in ['evaluation']}
 
-    # move the input and model to GPU for speed if available
-    if torch.cuda.is_available():
-        input_batch = input_batch.to('cuda')
-        model.to('cuda')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")    
+    return dataset_sizes, device, class_names, dataloaders
 
-    with torch.no_grad():
-        output = model(input_batch)
-    # Tensor of shape 1000, with confidence scores over Imagenet's 1000 classes
-    print(output[0])
-    # The output has unnormalized scores. To get probabilities, you can run a softmax on it.
-    print(torch.nn.functional.softmax(output[0], dim=0))
+def run_test():
+    model = models.resnet18(pretrained=True)
+    model.load_state_dict(torch.load()
+    running_loss = 0.0
+    running_corrects = 0
+    
+
+if __name__ == '__main__':
+    run_test()
