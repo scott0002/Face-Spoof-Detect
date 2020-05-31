@@ -1,6 +1,7 @@
 from __future__ import print_function, division
 
 import torch
+import math
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
@@ -47,18 +48,24 @@ def run_test():
     running_corrects = 0
     model.eval()
     #phase=['evalution']
-    for inputs, labels in dataloaders:
-        inputs = inputs.to(device)
-        labels = labels.to(device)
-    #print(dataloaders)
+    inputs = []
+    labels = []
+    curt = time.time()
+    for a, b in dataloaders:
+        if(time.time()-curt>5):
+            print('loss', running_loss)
+            print('corrects', running_corrects)
+            curt = time.time()
+        inputs = a.to(device)
+        labels = b.to(device)
+        criterion = nn.CrossEntropyLoss()
+        outputs = model(inputs)
+        _, preds = torch.max(outputs, 1)
+        loss = criterion(outputs, labels)
+        running_loss += loss.item()
+        running_corrects += torch.sum(preds == labels.data)
     # statistics
-    criterion = nn.CrossEntropyLoss()
-    outputs = model(inputs)
-    _, preds = torch.max(outputs, 1)
-    loss = criterion(outputs, labels)
-    running_loss += loss.item() * inputs.size(0)
-    running_corrects += torch.sum(preds == labels.data)
-    #print(running_corrects.double())
+    
     loss = running_loss / dataset_sizes
     acc = running_corrects.double() / dataset_sizes
 
